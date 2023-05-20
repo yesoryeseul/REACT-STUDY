@@ -12,7 +12,7 @@ import { Routes, Route, Link, Outlet } from "react-router-dom";
 import Detail from "./pages/Detail";
 
 function App() {
-  let [shoes] = useState(dataList);
+  let [shoes, setShoes] = useState(dataList);
 
   return (
     <ThemeProvider theme={theme}>
