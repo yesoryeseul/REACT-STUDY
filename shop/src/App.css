@@ -4,4 +4,23 @@
 
 .nav {
   color: #404040;
+  cursor: pointer;
+}
+
+.home {
+  color: #404040;
+  font-size: 20px;
+  padding-right: 1rem;
+  margin: 5px 0;
+}
+
+.navLink {
+  color: #404040;
+  padding: 8px;
+}
+
+.columnFlexCenter {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
 }

@@ -10,7 +10,7 @@ function Item() {
     <Container>
       <Row style={{ textAlign: "center" }}>
         {shoes.map((item, i) => (
-          <ItemCard shoes={item} i={i + 1} />
+          <ItemCard shoes={item} idx={i} />
         ))}
       </Row>
     </Container>

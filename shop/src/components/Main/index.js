@@ -46,14 +46,12 @@ const Mainh2 = styled.h2`
 
 const Mainh3 = styled.h2`
   font-size: ${({ theme }) => theme.FONT_SIZE["h3"]};
-  margin-top: 1rem;
 `;
 
 const LearnMore = styled.a`
   color: ${({ theme }) => theme.PALETTE.brandColor};
   font-size: ${({ theme }) => theme.FONT_SIZE.large};
   font-weight: ${({ theme }) => theme.FONT_WEIGHT.semiBold};
-  margin-top: 1rem;
 `;
 
 const S = {

@@ -1,10 +1,10 @@
 import Col from "react-bootstrap/Col";
 import styled from "styled-components";
 
-const ItemCard = ({ shoes, i }) => {
+const ItemCard = ({ shoes, idx }) => {
   return (
     <Col>
-      <Img src={process.env.PUBLIC_URL + `/item${i}.jpg`} />
+      <Img src={process.env.PUBLIC_URL + `/item${idx}.jpg`} />
       <h4>{shoes.title}</h4>
       <p>{shoes.content}</p>
     </Col>

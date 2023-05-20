@@ -1,15 +1,23 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+  let navigate = useNavigate();
   return (
     <Navbar variant="light" className="navbgcolor">
       <Container>
-        <Navbar.Brand href="#home" className="nav">
+        <Navbar.Brand onClick={() => navigate("/")} className="nav">
           Apple
         </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link href="#home" className="nav">
+          {/* <Link to="/" className="home">
+            Apple
+          </Link> */}
+          {/* <Link to="/detail" className="navLink">
             스토어
+          </Link> */}
+          <Nav.Link onClick={() => navigate("/detail")} className="nav">
+            Store
           </Nav.Link>
           <Nav.Link href="#features" className="nav">
             Mac
