@@ -24,3 +24,19 @@
   display: flex;
   align-items: center;
 }
+
+/* 
+전환 애니메이션
+1. 애니메이션 동작 전 className 만들기
+2. 애니메이션 동작 후 className 만들기
+3. className에 transition 속성 추가
+4. 원할 떄 2번 className 부착
+*/
+
+.start {
+  opacity: 0;
+}
+.end {
+  opacity: 1;
+  transition: opacity 0.5s;
+}

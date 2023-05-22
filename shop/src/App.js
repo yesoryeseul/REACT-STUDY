@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import bg1 from "./img/iphone1.jpg";
 import GlobalStyles from "./styles/global";
 import { ThemeProvider } from "styled-components";
@@ -10,9 +10,13 @@ import Item from "./components/Item";
 import dataList from "./data.js";
 import { Routes, Route, Link, Outlet } from "react-router-dom";
 import Detail from "./pages/Detail";
+import Cart from "./pages/Cart";
+
+export let Context1 = createContext();
 
 function App() {
   let [shoes, setShoes] = useState(dataList);
+  let [stock, setStock] = useState([10, 11, 12]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -39,7 +43,16 @@ function App() {
             </>
           }
         />
-        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route
+          path="/detail/:id"
+          element={
+            <Context1.Provider value={{ stock, shoes }}>
+              <Detail shoes={shoes} />
+            </Context1.Provider>
+          }
+        />
+
+        <Route path="/cart" element={<Cart />} />
 
         {/* Nested Route about/member about/location */}
         <Route path="/about" element={<About />}>
