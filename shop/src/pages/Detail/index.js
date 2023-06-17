@@ -2,11 +2,15 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 import { Context1 } from "../../App.js";
+import { addItem } from "../../store.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const Detail = ({ shoes }) => {
   let { stock } = useContext(Context1);
-
   const [fadeDetail, setFadeDetail] = useState("");
+
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   useEffect(() => {
     // 탭이 변할 때 마다 end를 부착하기
     // fadeDetail라는 state를 end로 바꿔주세요
@@ -68,7 +72,14 @@ const Detail = ({ shoes }) => {
             <h4 className="pt-5">{test.title}</h4>
             <p>{test.content}</p>
             <p>{test.price}</p>
-            <button className="btn btn-danger">주문하기</button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                dispatch(addItem({ id: 1, name: "White Band", count: 1 }));
+              }}
+            >
+              주문하기
+            </button>
           </div>
         </div>
         <Nav variant="tabs" defaultActiveKey="link1">

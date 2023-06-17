@@ -1,0 +1,17 @@
+github open api 를 사용하여 특정 레퍼지토리의 issue 데이터 조회하기
+
+- rtk 사용
+- 페이지네이션
+- 필터링(최신순, 업데이트 순, 댓글순 / 10개씩, 20개씩, 50개씩)
+
+1. 필요 라이브러리
+  - 비동기 통신을 위한 axios
+  - 조회 rtk 전역 상태 관리, redux-logger(개발자 버전)
+  - 쿼리스트링 사용, react-router-dom
+
+  npm i @reduxjs/toolkit axios react-router-dom react-router-dom@6.6.2
+
+  npm i -D redux-logger
+
+2. 작업 순서
+  1) axios 통신으로 레퍼지토리 issue data 가져오기
