@@ -17,3 +17,25 @@ github open api 를 사용하여 특정 레퍼지토리의 issue 데이터 조�
   1) axios 통신으로 레퍼지토리 issue data 가져오기
     -> default data 갯수 30개가 받아와짐
     -> 페이지네이션에서 200개 가져오기
+
+  2) 페이지네이션 로직
+    1. 게시물 총 갯수 200개 const TOTAL_PAGE = 200
+    2. 페이지 네이션 갯수 const pages = Math.ceil(TOTAL_PAGE / perPage)
+    3. 해당 숫자 누를 시 쿼리스트링 변경과 리스트 받아오기, 해당 페이지네이션 포커싱
+      `/repos/angular/angular-cli/issues?page=1&per_page=10&sort=created`
+    4. 페이지 1~10, 11~20 두 그룹으로 나누기
+    5. > 클릭 시 다음 페이지넘버로 이동, 예를 들어 perPage가 10개일 경우 10페이지에서 > 를 눌렀을 때 11 ~ 20 페이지가 나와야함
+       < 클릭 시 이전 페이지넘버로 이동, 예를 들어 perPage가 10개일 경우 11페이지에서 < 를 눌렀을 때 1 ~ 10 페이지가 나와야함
+    6. 맨처음 버튼 클릭 시 1페이지로 이동 / 맨끝 버튼 클릭 시 마지막 페이지(pages)로 이동
+
+    * refactor 기존 const getIssueData 함수와 getIssueData(변수); 로직 삭제
+    -> 해당 페이지네이션은 쿼리스트링만 바꿔주는 역할
+    -> 실제 데이터 받아오는 기능은 issue/index.js 의 useEffect 기능에서 의존성 배열에 넣어준 [page, sort, perPage] 값의 변화에 따라 데이터를 받아오는 것!
+
+  3) 필터기능
+    1. 필터 또한 쿼리스트링만 변경하는 것 [page, sort, perPage] 를 감지하여 렌더링해주는 기능
+    2. select > option ui 만들기
+    3. 각 option에 value (e.target.value 활용)설정 "created", "updated", "comments" / 10, 20, 50
+    4. select에 이벤트 주기
+    5. value값 감지하여 쿼리스트링에 value 값이 할당되어 렌더링 일어남
+      -> 실제 데이터 받아오는 기능은 issue/index.js 의 useEffect 기능에서 의존성 배열에 넣어준 [page, sort, perPage] 값의 변화에 따라 데이터를 받아오는 것!

@@ -1,6 +1,4 @@
-import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getData } from "../reducer/data";
 
 const Pagination = () => {
   /*
@@ -17,7 +15,6 @@ const Pagination = () => {
     -> 실제 데이터 받아오는 기능은 issue/index.js 의 useEffect 기능에서 의존성 배열에 넣어준 [page, sort, perPage] 값의 변화에 따라 데이터를 받아오는 것!
   */
   const navigate = useNavigate(); // 쿼리스트링 사용
-  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   let perPage = parseInt(searchParams.get("per_page")) || 10; // perPage undefined인 경우 10개씩 설정
   let page = parseInt(searchParams.get("page")) || 1; // page undefined인 경우 1페이지 설정
@@ -32,26 +29,18 @@ const Pagination = () => {
     navigate(`/?page=${newPage}&per_page=${perPage}&sort=${sort}`);
   };
 
-  // 4. 페이지 그룹 2개로 나누기
-  /*
-  ex 200개를 10개씩 보여준다면 현재 20페이지
-    Math.ceil(200 / 10) = 20 / 2?
-  */
-  const pageGroup = Math.ceil(page / perPage); //  ex Math.ceil(1 ~ 10 / 10) = 1 그룹, Math.ceil(11 ~ 20 / 10) = 2 그룹
-  const startPage = (pageGroup - 1) * perPage + 1; // 그룹 당 시작 페이지
-  // 1그룹의 경우 (1 - 1) * 10 + 1 = 1
-  // 2그룹의 경우 (2 - 1) * 10 + 1 = 11
-
   // 5. < > 페이지로 이동
   const onPrevArrow = () => {
-    const prevPage = pageGroup > 1 ? (pageGroup - 1) * perPage : 1; // 11 ~ 20일 때 11페이지로 이동 아니라면(1~10) 10페이지
+    const prevPage = page > 1 ? page - 1 : 1;
     navigate(`/?page=${prevPage}&per_page=${perPage}&sort=${sort}`);
   };
 
   const onNextArrow = () => {
-    const nextPage = pageGroup === 1 ? pageGroup * perPage + 1 : pages; // 1 ~ 10일 때 11페이지로 이동 아니라면(11~20)이면 20페이지 , 여기서 11 ~ 20페이지에서 > 가 보이지 않는 문제
+    const nextPage = page < pages ? page + 1 : pages;
     navigate(`/?page=${nextPage}&per_page=${perPage}&sort=${sort}`);
   };
+
+  const startPage = (Math.ceil(page / perPage) - 1) * perPage + 1; // 1 ~ 10의 시작페이지 1, 11 ~ 20의 시작페이지 11
 
   return (
     <div>
@@ -59,6 +48,9 @@ const Pagination = () => {
         <button onClick={() => onChangePage(1)}>맨처음</button>
         <button onClick={onPrevArrow}>{"<"}</button>
         <div>
+          {/* 1~ 10 페이지일 때 startPage = 1이므로 pageNumber = 1 + i -> perPage마다 map이 돌아가 페이지 1 ~ 10로 ui 렌더링
+          11 ~ 20 페이지일 때 startPage = 11이므로 pageNumber = 11 + i -> perPage마다 map이 돌아가 페이지 11 ~ 20로 ui 렌더링
+          */}
           {Array(perPage)
             .fill()
             .map((_, i) => {
@@ -79,9 +71,7 @@ const Pagination = () => {
               );
             })}
         </div>
-        {pageGroup < Math.ceil(pages / perPage) && (
-          <button onClick={onNextArrow}>{">"}</button>
-        )}
+        <button onClick={onNextArrow}>{">"}</button>
         <button onClick={() => onChangePage(pages)}>맨끝</button>
       </div>
     </div>

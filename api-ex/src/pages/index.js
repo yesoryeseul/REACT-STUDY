@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import OneIssue from "./Issue/one-issue";
 import Pagination from "../components/Pagination";
+import Filtering from "../components/Filtering";
 
 const IssueData = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const IssueData = () => {
         <OneIssue issue={issue} />
       ))}
       <Pagination />
+      <Filtering />
     </div>
   );
 };
