@@ -4,6 +4,7 @@ import dataApi from "../apis/data";
 export const getData = createAsyncThunk(
   "issue/getData",
   async ({ page, perPage, sort }) => {
+    // const res = await dataApi.getRepoData(params) / {params}
     const res = await dataApi.getRepoData(page, perPage, sort);
     console.log("res", res);
     return res.data;

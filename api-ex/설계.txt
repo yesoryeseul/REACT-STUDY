@@ -6,7 +6,7 @@ github open api 를 사용하여 특정 레퍼지토리의 issue 데이터 조�
 
 1. 필요 라이브러리
   - 비동기 통신을 위한 axios
-  - 조회 rtk 전역 상태 관리, redux-logger(개발자 버전)
+  - 조회 rtk 전역 상태 관리, redux-logger(개발자 버전), react-redux(useDispatch, useSelector 사용)
   - 쿼리스트링 사용, react-router-dom
 
   npm i @reduxjs/toolkit axios react-router-dom react-router-dom@6.6.2
@@ -15,3 +15,5 @@ github open api 를 사용하여 특정 레퍼지토리의 issue 데이터 조�
 
 2. 작업 순서
   1) axios 통신으로 레퍼지토리 issue data 가져오기
+    -> default data 갯수 30개가 받아와짐
+    -> 페이지네이션에서 200개 가져오기

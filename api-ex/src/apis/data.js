@@ -7,6 +7,7 @@ const dataApi = {
   getRepoData(page = 1, perPage = 10, sort = "created") {
     console.log("❤️ axiosInstance 성공 ❤️");
     return axiosInstace.get(
+      // `/repos/angular/angular-cli/issues`, {params} // 매개변수 params 전달 (리팩토링해보기)
       `/repos/angular/angular-cli/issues?page=${page}&per_page=${perPage}&sort=${sort}`
     );
   },
