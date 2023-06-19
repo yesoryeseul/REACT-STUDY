@@ -11,6 +11,10 @@ const Pagination = () => {
     `/repos/angular/angular-cli/issues?page=1&per_page=10&sort=created`
   4. 페이지 1~10, 11~20 두 그룹으로 나누기
   5. 맨처음 버튼 클릭 시 1페이지로 이동 / 맨끝 버튼 클릭 시 마지막 페이지(pages)로 이동
+
+  * refactor 기존 const getIssueData 함수와 getIssueData(변수); 로직 삭제
+    -> 해당 페이지네이션은 쿼리스트링만 바꿔주는 역할
+    -> 실제 데이터 받아오는 기능은 issue/index.js 의 useEffect 기능에서 의존성 배열에 넣어준 [page, sort, perPage] 값의 변화에 따라 데이터를 받아오는 것!
   */
   const navigate = useNavigate(); // 쿼리스트링 사용
   const dispatch = useDispatch();
@@ -23,17 +27,9 @@ const Pagination = () => {
   const TOTAL_PAGE = 200; // 총 게시물 수
   const pages = Math.ceil(TOTAL_PAGE / perPage); // 페이지 개수
 
-  const getIssueData = async (newPage) => {
-    try {
-      await dispatch(getData({ page: newPage, perPage, sort }));
-    } catch (err) {
-      console.error(err);
-    }
-  };
   // 3. 해당 페이지로 이동
   const onChangePage = (newPage) => {
     navigate(`/?page=${newPage}&per_page=${perPage}&sort=${sort}`);
-    getIssueData(newPage);
   };
 
   // 4. 페이지 그룹 2개로 나누기
@@ -45,21 +41,16 @@ const Pagination = () => {
   const startPage = (pageGroup - 1) * perPage + 1; // 그룹 당 시작 페이지
   // 1그룹의 경우 (1 - 1) * 10 + 1 = 1
   // 2그룹의 경우 (2 - 1) * 10 + 1 = 11
-  // let endPage = Math.min(pageGroup * perPage, pages); // 그룹 당 마지막 페이지
-  // 1그룹의 경우 (1*10), 20(현재 페이지 개수) 중 작은 값 10
-  // 2그룹의 경우 (2*10), 20(현재 페이지 개수) 중 작은 값 20
 
   // 5. < > 페이지로 이동
   const onPrevArrow = () => {
-    const prevPage = Math.max(1, (pageGroup - 1) * perPage); // 1, 0  1, 10
+    const prevPage = pageGroup > 1 ? (pageGroup - 1) * perPage : 1; // 11 ~ 20일 때 11페이지로 이동 아니라면(1~10) 10페이지
     navigate(`/?page=${prevPage}&per_page=${perPage}&sort=${sort}`);
-    getIssueData(prevPage);
   };
 
   const onNextArrow = () => {
-    const nextPage = Math.min(pageGroup * perPage + 1, pages);
+    const nextPage = pageGroup === 1 ? pageGroup * perPage + 1 : pages; // 1 ~ 10일 때 11페이지로 이동 아니라면(11~20)이면 20페이지 , 여기서 11 ~ 20페이지에서 > 가 보이지 않는 문제
     navigate(`/?page=${nextPage}&per_page=${perPage}&sort=${sort}`);
-    getIssueData(nextPage);
   };
 
   return (
@@ -73,8 +64,13 @@ const Pagination = () => {
             .map((_, i) => {
               const pageNumber = startPage + i;
               if (pageNumber > pages) return null;
+              const btnStyle =
+                pageNumber === page
+                  ? { background: "black", color: "white" }
+                  : null;
               return (
                 <button
+                  style={btnStyle}
                   key={pageNumber}
                   onClick={() => onChangePage(pageNumber)}
                 >
