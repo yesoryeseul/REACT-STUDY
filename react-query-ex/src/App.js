@@ -2,6 +2,7 @@ import "./App.css";
 import GlobalStyles from "styles/global";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TmdbPopular from "components/tmdb";
+import { SkeletonTest } from "components/SkeletonTest";
 
 function App() {
 	const client = new QueryClient({
@@ -17,6 +18,7 @@ function App() {
 		<QueryClientProvider client={client}>
 			<GlobalStyles />
 			{/* <List /> */}
+			<SkeletonTest />
 			<TmdbPopular />
 		</QueryClientProvider>
 	);

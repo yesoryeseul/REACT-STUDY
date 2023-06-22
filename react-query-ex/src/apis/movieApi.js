@@ -7,38 +7,29 @@ const MovieApi = {
 	// 	});
 	// }, // MovieApi.getPopular("ko_KR")
 
+	// 받아야 할 params 값 language, api_key
 	getPopularMovie(params) {
 		return axiosInstance.get(`/movie/popular`, { params });
-	}, // MovieApi.getPopular({ language: "ko-KR"., api_key: process.env.REACT_APP_TMDB_TOKEN });
+	}, // MovieApi.getPopular({ language: "ko-KR", api_key: process.env.REACT_APP_TMDB_TOKEN });
 
-	getNowPlayingMovie(language) {
-		return axiosInstance.get(`/movie/now_playing`, {
-			params: { language },
-		});
+	getNowPlayingMovie(params) {
+		return axiosInstance.get(`/movie/now_playing`, { params });
 	},
 
-	getUpComingMovie(language) {
-		return axiosInstance.get(`/movie/upcoming`, {
-			params: { language },
-		});
+	getUpComingMovie(params) {
+		return axiosInstance.get(`/movie/upcoming`, { params });
 	},
 
-	getTopRatedMovie(language) {
-		return axiosInstance.get(`/movie/top_rated`, {
-			params: { language },
-		});
+	getTopRatedMovie(params) {
+		return axiosInstance.get(`/movie/top_rated`, { params });
 	},
 
-	getUpComingMovie(language) {
-		return axiosInstance.get(`/movie/${movie_id}`, {
-			params: { language },
-		});
+	getUpComingMovie(movie_id, params) {
+		return axiosInstance.get(`/movie/${movie_id}`, { params });
 	},
 
-	getSearchMovie(language) {
-		return axiosInstance.get(`/search/movie`, {
-			params: { language },
-		});
+	getSearchMovie(params) {
+		return axiosInstance.get(`/search/movie`, { params });
 	},
 };
 

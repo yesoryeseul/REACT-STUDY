@@ -81,11 +81,17 @@
 
 // export default TmdbPopular;
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
+import { MuiSkeleton } from "./Skeleton";
+import { useInfiniteScrollQuery } from "hooks/use-infinity-query";
 import MovieApi from "apis/movieApi";
 
 const TmdbPopular = () => {
+	const imgBasicUrl = process.env.REACT_APP_IMG_BASIC_URL;
+	console.log("imgBasicUrl", imgBasicUrl);
+
+	const observerRef = useRef(null);
+
 	const fetchMovies = ({ pageParam = 1 }) =>
 		MovieApi.getPopularMovie({
 			language: "ko-KR",
@@ -93,11 +99,21 @@ const TmdbPopular = () => {
 			page: pageParam,
 		}).then(response => response.data);
 
-	const imgBasicUrl = process.env.REACT_APP_IMG_BASIC_URL;
-	console.log("imgBasicUrl", imgBasicUrl);
+	// const {
+	// 	data,
+	// 	isLoading,
+	// 	isSuccess,
+	// 	fetchNextPage,
+	// 	hasNextPage,
+	// 	isFetchingNextPage,
+	// } = useInfiniteQuery(["get/popular"], fetchMovies, {
+	// 	getNextPageParam: (lastPage, pages) => {
+	// 		const currentPage = pages.length;
+	// 		return currentPage ? currentPage + 1 : undefined;
+	// 	},
+	// });
 
-	const observerRef = useRef(null);
-
+	// useInfiniteScrollQuery -> hooks 의 재사용
 	const {
 		data,
 		isLoading,
@@ -105,12 +121,7 @@ const TmdbPopular = () => {
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-	} = useInfiniteQuery(["get/popular"], fetchMovies, {
-		getNextPageParam: (lastPage, pages) => {
-			const currentPage = pages.length;
-			return currentPage < 10 ? currentPage + 1 : undefined; // 10페이지까지만
-		},
-	});
+	} = useInfiniteScrollQuery(fetchMovies);
 
 	console.log(process.env.REACT_APP_BACKEND_URL);
 	console.log("TmdbPopular", data);
@@ -163,43 +174,82 @@ const TmdbPopular = () => {
 	}, [fetchNextPage, hasNextPage, handleObserver]);
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		// Skeleton UI 표시
+		return (
+			<div
+				style={{
+					width: "1120px",
+					display: "flex",
+					flexDirection: "row",
+					flexWrap: "wrap",
+					justifyContent: "space-around",
+					margin: "70px auto",
+				}}
+			>
+				{/* Skeleton UI */}
+				{Array.from({ length: 20 }, (_, index) => (
+					<MuiSkeleton key={index} />
+				))}
+			</div>
+		);
 	}
 
 	if (!isSuccess) {
-		return <div>Data is not available</div>;
+		return null;
 	}
+	console.log("isLoading", isLoading);
 
 	const allTitles = data.pages.flatMap(page => page.results);
-	console.log("test", observerRef.current);
-	return (
-		<div
-			style={{
-				width: "1120px",
-				display: "flex",
-				flexDirection: "row",
-				flexWrap: "wrap",
-				justifyContent: "space-around",
-				margin: "70px auto",
-			}}
-		>
-			{/* <div>useInfiniteQuery로 데이터 가져오기</div> */}
-			{allTitles.map(movie => (
-				<div style={{ width: "20%", marginBottom: "20px" }}>
-					<img
-						src={`${imgBasicUrl}${movie.poster_path}`}
-						style={{ borderRadius: "4px", height: "300px" }}
-					/>
-					<p key={movie.id}>{movie.original_title} </p>
-					<span>⭐ {(movie.vote_average / 2).toFixed(1)}</span>
-				</div>
-			))}
+	// data.pages.result 를 선택하기 위해 flatMap으로 평탄화
+	// ex) 일반 map을 사용하면 [[1], [2], [3]] -> flatMap [1, 2, 3]
 
-			{/* <div ref={observerRef} style={{ height: "10px" }} /> */}
-			<div className="loader" ref={observerRef}>
-				{isFetchingNextPage && hasNextPage ? "Loading..." : "No search left"}
+	return (
+		<>
+			<h1
+				style={{
+					textAlign: "center",
+					fontSize: "42px",
+					fontWeight: "bold",
+					marginTop: "20px",
+				}}
+			>
+				POPULAR MOVIE
+			</h1>
+			<div
+				style={{
+					width: "1120px",
+					display: "flex",
+					flexDirection: "row",
+					flexWrap: "wrap",
+					justifyContent: "space-around",
+					margin: "70px auto",
+				}}
+			>
+				{/* <div>useInfiniteQuery로 데이터 가져오기</div> */}
+				{allTitles.map(movie => {
+					if (!movie.adult) {
+						return (
+							<div style={{ width: "20%", marginBottom: "20px" }}>
+								<img
+									src={`${imgBasicUrl}${movie.poster_path}`}
+									style={{ borderRadius: "4px", height: "300px" }}
+								/>
+								<p key={movie.id} style={{ fontWeight: "bold" }}>
+									{movie.title}
+								</p>
+								<span>⭐ {(movie.vote_average / 2).toFixed(1)}</span>
+							</div>
+						);
+					} else {
+						return null;
+					}
+				})}
+				{/* <div ref={observerRef} style={{ height: "10px" }} /> */}
+				<div className="loader" ref={observerRef}>
+					{isFetchingNextPage && hasNextPage ? "Loading..." : null}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
