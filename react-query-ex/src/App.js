@@ -1,7 +1,7 @@
 import "./App.css";
 import GlobalStyles from "styles/global";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import TmdbPopular from "components/03_tmdb";
+import TmdbPopular from "components/tmdb";
 
 function App() {
 	const client = new QueryClient({

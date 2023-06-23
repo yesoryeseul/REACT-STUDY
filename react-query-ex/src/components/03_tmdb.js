@@ -81,16 +81,43 @@
 
 // export default TmdbPopular;
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Skeleton } from "@mui/material";
 import { useInfiniteScrollQuery } from "hooks/queries/use-infinity-query";
 
 const TmdbPopular = () => {
 	const imgBasicUrl = process.env.REACT_APP_IMG_BASIC_URL;
 	// console.log("imgBasicUrl", imgBasicUrl);
+	// useInfiniteScrollQuery -> hooks 의 재사용
+	const {
+		data,
+		isLoading,
+		isSuccess,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+	} = useInfiniteScrollQuery();
 
 	const observerRef = useRef(null);
 
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			entries => {
+				const [target] = entries;
+				if (target.isIntersecting && hasNextPage) {
+					fetchNextPage();
+				}
+			},
+			{ threshold: 0.5 }, // 스크롤이 50% 이상 보일 때 fetchNextPage() 호출
+		);
+
+		const element = observerRef.current;
+		if (element) observer.observe(element);
+
+		return () => {
+			if (element) observer.unobserve(element);
+		};
+	}, [fetchNextPage, hasNextPage]);
 	// const fetchMovies = ({ pageParam = 1 }) =>
 	// 	MovieApi.getPopularMovie({
 	// 		language: "ko-KR",
@@ -112,41 +139,11 @@ const TmdbPopular = () => {
 	// 	},
 	// });
 
-	// useInfiniteScrollQuery -> hooks 의 재사용
-	const {
-		data,
-		isLoading,
-		isSuccess,
-		fetchNextPage,
-		hasNextPage,
-		isFetchingNextPage,
-	} = useInfiniteScrollQuery();
-
 	// console.log(process.env.REACT_APP_BACKEND_URL);
 	console.log("TmdbPopular", data);
 
 	if (!data || !data.pages) return null;
-	if (!data || !data.pages) return null;
 	const result = data.pages.flatMap(page => page.data.results);
-
-	// useEffect(() => {
-	// 	const observer = new IntersectionObserver(
-	// 		entries => {
-	// 			const [target] = entries;
-	// 			if (target.isIntersecting && hasNextPage) {
-	// 				fetchNextPage();
-	// 			}
-	// 		},
-	// 		{ threshold: 0.5 }, // 스크롤이 50% 이상 보일 때 fetchNextPage() 호출
-	// 	);
-
-	// 	const element = observerRef.current;
-	// 	if (element) observer.observe(element);
-
-	// 	return () => {
-	// 		if (element) observer.unobserve(element);
-	// 	};
-	// }, [fetchNextPage, hasNextPage]);
 
 	// const result = data.pages[0].data.results;
 	// console.log(result);
@@ -210,10 +207,10 @@ const TmdbPopular = () => {
 	}
 	console.log("isLoading", isLoading);
 
-	const allTitles = data.pages.flatMap(page => page.results);
+	// const allTitles = data.pages.flatMap(page => page.results);
 	// data.pages.result 를 선택하기 위해 flatMap으로 평탄화
 	// ex) 일반 map을 사용하면 [[1], [2], [3]] -> flatMap [1, 2, 3]
-	console.log(allTitles);
+	// console.log(allTitles);
 	return (
 		<>
 			<h1

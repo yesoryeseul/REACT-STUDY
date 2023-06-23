@@ -7,8 +7,6 @@ const TmdbPopular = () => {
 	const imgBasicUrl = process.env.REACT_APP_IMG_BASIC_URL;
 	// console.log("imgBasicUrl", imgBasicUrl);
 
-	const observerRef = useRef(null);
-
 	// useInfiniteScrollQuery -> hooks 의 재사용
 	const {
 		data,
@@ -20,11 +18,8 @@ const TmdbPopular = () => {
 	} = useInfiniteScrollQuery();
 
 	// console.log(process.env.REACT_APP_BACKEND_URL);
-	console.log("TmdbPopular", data);
 
-	if (!data || !data.pages) return null;
-	if (!data || !data.pages) return null;
-	const result = data.pages.flatMap(page => page.data.results);
+	const observerRef = useRef(null);
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
@@ -45,6 +40,10 @@ const TmdbPopular = () => {
 		};
 	}, [fetchNextPage, hasNextPage]);
 
+	console.log("TmdbPopular", data);
+
+	if (!data || !data.pages) return null;
+	const result = data.pages.flatMap(page => page.data.results);
 
 	if (isLoading) {
 		return null;
