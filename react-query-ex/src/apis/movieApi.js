@@ -10,9 +10,22 @@ const MovieApi = {
 	/* 엔드포인트만 다른 로직 -> 더 재사용성있게 만들 순 없을까?
 		매개변수로 전달하기!!
 	*/
-	getMoviesList(endpoint, params) {
-		return axiosInstance.get(`/movie/${endpoint}`, { params });
-	}, // MovieApi.getPopular(endpoint);
+	// getMoviesList(endpoint, params) {
+	// 	return axiosInstance.get(`/movie/${endpoint}`, { params });
+	// }, // MovieApi.getPopular(endpoint);
+
+	// 언어 바꾸기 로직 도전!
+	// getMoviesList(endpoint, params) {
+	// 	return axiosInstance.get(`/movie/${endpoint}`, {
+	// 		params: params,
+	// 	});
+	// },
+
+	getMoviesList(endpoint, params, language) {
+		return axiosInstance.get(`/movie/${endpoint}`, {
+			params: { ...params, language },
+		});
+	},
 
 	// getPopularMovie(params) {
 	// 	return axiosInstance.get(`/movie/popular`, { params });

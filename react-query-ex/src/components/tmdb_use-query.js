@@ -2,17 +2,19 @@
 // import useGetMovies from "hooks/queries/use-queries";
 
 import { useGetMovies } from "hooks/queries/use-queries";
+import { useState } from "react";
 
 const TmdbPopularNoInfinite = () => {
 	const imgBasicUrl = process.env.REACT_APP_IMG_BASIC_URL;
-	// console.log("imgBasicUrl", imgBasicUrl);
+	const [selectedLanguage, setSelectedLanguage] = useState("ko-KR");
 
 	let popularMovies;
-	const cachedPopularMovies = useGetMovies.ListMovies("popular");
-	// const cachedNowPlayingrMovies = useGetMovies.ListMovies("now_playing");
-	// const cachedTopRatedMovies = useGetMovies.ListMovies("top_rated");
 
-	// console.log(process.env.REACT_APP_BACKEND_URL);
+	const cachedPopularMovies = useGetMovies.ListMovies(
+		"popular",
+		{},
+		selectedLanguage,
+	);
 
 	console.log("cachedPopularMovies", cachedPopularMovies);
 
@@ -22,6 +24,14 @@ const TmdbPopularNoInfinite = () => {
 		popularMovies = cachedPopularMovies.data.data.results;
 	}
 	console.log(popularMovies);
+
+	console.log(
+		"onLanuageChange시 콘솔 변화는 바로바로 일어남!",
+		selectedLanguage,
+	);
+	const onLanuageChange = e => {
+		setSelectedLanguage(e.target.value);
+	};
 
 	// const result = data.pages.flatMap(page => page.data.results);
 	// console.log(result);
@@ -40,6 +50,10 @@ const TmdbPopularNoInfinite = () => {
 
 	return (
 		<>
+			<select value={selectedLanguage} onChange={onLanuageChange}>
+				<option value="ko-KR">한국어</option>
+				<option value="en-US">English</option>
+			</select>
 			<h1
 				style={{
 					textAlign: "center",

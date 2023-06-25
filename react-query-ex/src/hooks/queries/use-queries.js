@@ -22,9 +22,9 @@ export const useGetMovies = {
 		);
 	},
 	// 하나의 로직으로 엔드포인트만 다르게 사용할 수 있다!
-	ListMovies: endpoint => {
+	ListMovies: (endpoint, params, language) => {
 		return useQuery([QUERYKEYS.MOVIE_LIST], () =>
-			MovieApi.getMoviesList(endpoint),
+			MovieApi.getMoviesList(endpoint, params, language),
 		);
 	},
 	// cacheNowPlayingMovie: () => {

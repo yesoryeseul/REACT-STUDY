@@ -1,7 +1,7 @@
 import "./App.css";
 import GlobalStyles from "styles/global";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import TmdbPopular from "components/tmdb_infinity";
+import TmdbPopularNoInfinite from "components/tmdb_use-query";
 
 function App() {
 	const client = new QueryClient({
@@ -9,7 +9,7 @@ function App() {
 			// 기본 옵션
 			queries: {
 				staleTime: 0, // 0은 default라 0일 경우는 굳이 써줄 필요는 없긴 함
-				cacheTime: 1000 * 60 * 5,
+				cacheTime: 0,
 			},
 		},
 	});
@@ -19,8 +19,8 @@ function App() {
 			<GlobalStyles />
 			{/* <List /> */}
 			{/* <SkeletonTest /> */}
-			{/* <TmdbPopularNoInfinite /> */}
-			<TmdbPopular />
+			<TmdbPopularNoInfinite />
+			{/* <TmdbPopular /> */}
 		</QueryClientProvider>
 	);
 }
