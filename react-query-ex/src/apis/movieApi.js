@@ -7,24 +7,30 @@ const MovieApi = {
 	// 	});
 	// }, // MovieApi.getPopular("ko_KR")
 
-	// 받아야 할 params 값 language, api_key
-	getPopularMovie(params) {
-		return axiosInstance.get(`/movie/popular`, { params });
-	}, // MovieApi.getPopular({ language: "ko-KR", api_key: process.env.REACT_APP_TMDB_TOKEN });
+	/* 엔드포인트만 다른 로직 -> 더 재사용성있게 만들 순 없을까?
+		매개변수로 전달하기!!
+	*/
+	getMoviesList(endpoint, params) {
+		return axiosInstance.get(`/movie/${endpoint}`, { params });
+	}, // MovieApi.getPopular(endpoint);
 
-	getNowPlayingMovie(params) {
-		return axiosInstance.get(`/movie/now_playing`, { params });
-	},
+	// getPopularMovie(params) {
+	// 	return axiosInstance.get(`/movie/popular`, { params });
+	// }, // MovieApi.getPopular();
 
-	getUpComingMovie(params) {
-		return axiosInstance.get(`/movie/upcoming`, { params });
-	},
+	// getNowPlayingMovie(params) {
+	// 	return axiosInstance.get(`/movie/now_playing`, { params });
+	// },
 
-	getTopRatedMovie(params) {
-		return axiosInstance.get(`/movie/top_rated`, { params });
-	},
+	// getUpComingMovie(params) {
+	// 	return axiosInstance.get(`/movie/upcoming`, { params });
+	// },
 
-	getUpComingMovie(movie_id, params) {
+	// getTopRatedMovie(params) {
+	// 	return axiosInstance.get(`/movie/top_rated`, { params });
+	// },
+
+	getDetailMovie(movie_id, params) {
 		return axiosInstance.get(`/movie/${movie_id}`, { params });
 	},
 

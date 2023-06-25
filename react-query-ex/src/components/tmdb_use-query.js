@@ -1,0 +1,83 @@
+// 무한 스크롤 아닌 데이터만 뿌려주기
+// import useGetMovies from "hooks/queries/use-queries";
+
+import { useGetMovies } from "hooks/queries/use-queries";
+
+const TmdbPopularNoInfinite = () => {
+	const imgBasicUrl = process.env.REACT_APP_IMG_BASIC_URL;
+	// console.log("imgBasicUrl", imgBasicUrl);
+
+	let popularMovies;
+	const cachedPopularMovies = useGetMovies.ListMovies("popular");
+	// const cachedNowPlayingrMovies = useGetMovies.ListMovies("now_playing");
+	// const cachedTopRatedMovies = useGetMovies.ListMovies("top_rated");
+
+	// console.log(process.env.REACT_APP_BACKEND_URL);
+
+	console.log("cachedPopularMovies", cachedPopularMovies);
+
+	if (!cachedPopularMovies.data) popularMovies = []; // data가 없을 때 빈배열
+	else {
+		// data 있을 때
+		popularMovies = cachedPopularMovies.data.data.results;
+	}
+	console.log(popularMovies);
+
+	// const result = data.pages.flatMap(page => page.data.results);
+	// console.log(result);
+
+	// if (!data || !data.pages) return null;
+	// if (isLoading) {
+	// 	return null;
+	// }
+
+	// if (typeof data === "undefined") return <div>로딩중</div>;
+
+	// if (!isSuccess) {
+	// 	return null;
+	// }
+	// console.log("isLoading", isLoading);
+
+	return (
+		<>
+			<h1
+				style={{
+					textAlign: "center",
+					fontSize: "42px",
+					fontWeight: "bold",
+					marginTop: "20px",
+				}}
+			>
+				POPULAR MOVIE
+			</h1>
+			<div
+				style={{
+					width: "1120px",
+					display: "flex",
+					flexDirection: "row",
+					flexWrap: "wrap",
+					justifyContent: "space-around",
+					margin: "70px auto",
+				}}
+			>
+				{/* <div>useInfiniteQuery로 데이터 가져오기</div> */}
+				{popularMovies.map(movie => {
+					return (
+						<div style={{ width: "20%", marginBottom: "20px" }}>
+							<img
+								src={`${imgBasicUrl}${movie.poster_path}`}
+								style={{ borderRadius: "4px", height: "300px" }}
+							/>
+							<p key={movie.id} style={{ fontWeight: "bold" }}>
+								{movie.title}
+							</p>
+							<span>⭐ {(movie.vote_average / 2).toFixed(1)}</span>
+						</div>
+					);
+				})}
+			</div>
+		</>
+	);
+};
+
+export default TmdbPopularNoInfinite;
