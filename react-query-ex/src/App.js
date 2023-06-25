@@ -1,7 +1,7 @@
 import "./App.css";
 import GlobalStyles from "styles/global";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import TmdbPopularNoInfinite from "components/tmdb_use-query";
+import TmdbPopular from "components/tmdb_infinity";
 
 function App() {
 	const client = new QueryClient({
@@ -19,8 +19,8 @@ function App() {
 			<GlobalStyles />
 			{/* <List /> */}
 			{/* <SkeletonTest /> */}
-			<TmdbPopularNoInfinite />
-			{/* <TmdbPopular /> */}
+			{/* <TmdbPopularNoInfinite /> */}
+			<TmdbPopular />
 		</QueryClientProvider>
 	);
 }

@@ -15,7 +15,7 @@ const TmdbPopular = () => {
 		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-	} = useInfiniteScrollQuery();
+	} = useInfiniteScrollQuery("popular");
 
 	// console.log(process.env.REACT_APP_BACKEND_URL);
 
