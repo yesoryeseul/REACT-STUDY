@@ -25,10 +25,7 @@ const TmdbPopularNoInfinite = () => {
 	}
 	console.log(popularMovies);
 
-	console.log(
-		"onLanuageChange시 콘솔 변화는 바로바로 일어남!",
-		selectedLanguage,
-	);
+	console.log("언어 변경", selectedLanguage);
 	const onLanuageChange = e => {
 		setSelectedLanguage(e.target.value);
 	};
@@ -74,7 +71,6 @@ const TmdbPopularNoInfinite = () => {
 					margin: "70px auto",
 				}}
 			>
-				{/* <div>useInfiniteQuery로 데이터 가져오기</div> */}
 				{popularMovies.map(movie => {
 					return (
 						<div style={{ width: "20%", marginBottom: "20px" }}>

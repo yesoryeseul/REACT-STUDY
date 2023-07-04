@@ -1,0 +1,28 @@
+투두앱
+- 전체 아이템들 보여주기
+- 아이템 추가
+- 아이템 삭제
+- 아이템 체크박스
+
+- 아이템 필터링
+- 다크모드 지원
+- localStorage 저장
+
+----------------
+react-icons 사용
+
+-----------------------
+1. css
+  - top -> 다크/라이트 모드, 필터링(3개)
+  - center Planner
+  - bottom -> form -> input, button
+
+2. 추가, 삭제 구현 -- 7.3
+
+3. checkbox -> 상태 true/false useState 사용하여 css 바꿔주기
+
+state key 기본값 false 로 추가
+
+4. 아이템 필터링
+- Active -> state 인 것만 보여주기
+- Completed -> !state

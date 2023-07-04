@@ -10,38 +10,24 @@ const MovieApi = {
 	/* 엔드포인트만 다른 로직 -> 더 재사용성있게 만들 순 없을까?
 		매개변수로 전달하기!!
 	*/
-	getMoviesList(endpoint, params) {
-		return axiosInstance.get(`/movie/${endpoint}`, { params });
-	}, // MovieApi.getPopular(endpoint);
+	// 기본 로직
+	// getMoviesList(endpoint, params) {
+	// 	return axiosInstance.get(`/movie/${endpoint}`, { params });
+	// }, // MovieApi.getPopular(endpoint);
 
-	// 언어 바꾸기 로직 도전!
+	// 언어 바꾸기 요청
+	getMoviesList(endpoint, params, language) {
+		return axiosInstance.get(`/movie/${endpoint}`, {
+			params: { ...params, language },
+		});
+	},
 	// getMoviesList(endpoint, params) {
 	// 	return axiosInstance.get(`/movie/${endpoint}`, {
 	// 		params: params,
 	// 	});
 	// },
 
-	// getMoviesList(endpoint, params, language) {
-	// 	return axiosInstance.get(`/movie/${endpoint}`, {
-	// 		params: { ...params, language },
-	// 	});
-	// },
-
-	// getPopularMovie(params) {
-	// 	return axiosInstance.get(`/movie/popular`, { params });
-	// }, // MovieApi.getPopular();
-
-	// getNowPlayingMovie(params) {
-	// 	return axiosInstance.get(`/movie/now_playing`, { params });
-	// },
-
-	// getUpComingMovie(params) {
-	// 	return axiosInstance.get(`/movie/upcoming`, { params });
-	// },
-
-	// getTopRatedMovie(params) {
-	// 	return axiosInstance.get(`/movie/top_rated`, { params });
-	// },
+	// ----------------상세 페이지, 검색 페이지----------
 
 	getDetailMovie(movie_id, params) {
 		return axiosInstance.get(`/movie/${movie_id}`, { params });

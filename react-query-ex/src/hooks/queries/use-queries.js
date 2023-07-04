@@ -23,23 +23,10 @@ export const useGetMovies = {
 	},
 	// 하나의 로직으로 엔드포인트만 다르게 사용할 수 있다!
 	ListMovies: (endpoint, params, language) => {
-		return useQuery([QUERYKEYS.MOVIE_LIST], () =>
+		return useQuery([QUERYKEYS.MOVIE_LIST, language], () =>
 			MovieApi.getMoviesList(endpoint, params, language),
 		);
 	},
-	// cacheNowPlayingMovie: () => {
-	// 	return useQuery([QUERYKEYS.MOVIE_NOWPLAYING], () =>
-	// 		MovieApi.getNowPlayingMovie(),
-	// 	);
-	// },
-	// cacheTopRatedMovie: () => {
-	// 	return useQuery([QUERYKEYS.MOVIE_TOPRATED], () =>
-	// 		MovieApi.getTopRatedMovie(),
-	// 	);
-	// },
-	// cacheUpComingMovie: () => {
-	// 	return useQuery([QUERYKEYS.MOVIE_UPCOMING], () =>
-	// 		MovieApi.getUpComingMovie(),
-	// 	);
-	// },
 };
+
+// refetch or invalidate

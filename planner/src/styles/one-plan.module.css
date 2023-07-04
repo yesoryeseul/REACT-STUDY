@@ -1,0 +1,21 @@
+.onelist {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 10px 0;
+
+  & svg {
+    color: #0074ea;
+    cursor: pointer;
+  }
+}
+
+.left {
+  display: flex;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
