@@ -1,22 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import planner from "../styles/planner.module.css";
 import OnePlan from "./one-plan";
-import { BsFillMoonFill } from "react-icons/bs";
+import { BsFillMoonFill, BsSun } from "react-icons/bs";
+import { useDarkMode } from "context/DarkModeContext";
 
 const Planner = () => {
-  const [planList, setPlanList] = useState([
-    {
-      id: 1,
-      content: "코코 산책",
-      state: false,
-    },
-    {
-      id: 2,
-      content: "치즈케익 먹기",
-      state: false,
-    },
-  ]);
+  // const [planList, setPlanList] = useState([
+  //   {
+  //     id: 1,
+  //     content: "코코 산책",
+  //     state: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     content: "치즈케익 먹기",
+  //     state: false,
+  //   },
+  // ]);
+
+  const [planList, setPlanList] = useState(readPlansFromLocalStorage);
+  // 콜백함수 자체를 넣어줌 -> 초기값이 필요하지 않으면 반환하지 않음(불필요한 렌더링 방지)
   const [content, setContent] = useState("");
+  const [filtered, setFiltered] = useState(planList);
+  const [active, setActive] = useState("all");
+  const { isDark, toggleDarkMode } = useDarkMode();
+
+  useEffect(() => {
+    setFiltered(planList);
+  }, [planList]);
 
   // 플랜 추가
   const onAddPlan = (e) => {
@@ -28,6 +39,7 @@ const Planner = () => {
       state: false,
     };
     setPlanList([...planList, newPlan]);
+    setContent("");
   };
 
   // 플랜 삭제
@@ -46,35 +58,65 @@ const Planner = () => {
   };
 
   const onAllPlan = () => {
-    const allPlan = [...planList];
-    setPlanList(allPlan);
+    setFiltered([...planList]);
   };
 
   const onActive = () => {
     console.log("!state 만 보여주기");
-    const unCompletedPlan = [...planList];
-    const unCompleted = unCompletedPlan.filter((plan) => !plan.state);
-    setPlanList(unCompleted);
+    const unCompleted = planList.filter((plan) => !plan.state);
+    setFiltered(unCompleted);
   };
 
   const onCompleted = () => {
-    const completedPlan = [...planList];
-    const completed = completedPlan.filter((plan) => plan.state);
-    setPlanList(completed);
+    const completed = planList.filter((plan) => plan.state);
+    setFiltered(completed);
   };
+
+  // 로컬 스토리지에 값 저장
+  useEffect(() => {
+    localStorage.setItem("planList", JSON.stringify(planList));
+  }, [planList]);
 
   return (
     <div className={planner.wrapper}>
       <div className={planner.container}>
         <div className={planner.top}>
-          <BsFillMoonFill style={{ cursor: "pointer" }} />
+          <button className={planner.mode} onClick={toggleDarkMode}>
+            {isDark && <BsSun />}
+            {!isDark && <BsFillMoonFill size={14} />}
+          </button>
+
           <ul className={planner.filter}>
-            <li onClick={onAllPlan}>All</li>
-            <li onClick={onActive}>Active</li>
-            <li onClick={onCompleted}>Completed</li>
+            <li
+              className={active === "all" ? planner["bb"] : ""}
+              onClick={() => {
+                onAllPlan();
+                setActive("all");
+              }}
+            >
+              All
+            </li>
+            <li
+              className={active === "Active" ? planner.bb : ""}
+              onClick={() => {
+                onActive();
+                setActive("Active");
+              }}
+            >
+              Active
+            </li>
+            <li
+              className={active === "Completed" ? planner.bb : ""}
+              onClick={() => {
+                onCompleted();
+                setActive("Completed");
+              }}
+            >
+              Completed
+            </li>
           </ul>
         </div>
-        {planList.map((plan) => (
+        {filtered.map((plan) => (
           <OnePlan
             plan={plan}
             onDeletePlan={onDeletePlan}
@@ -82,7 +124,11 @@ const Planner = () => {
           />
         ))}
         <form className={planner.form} onSubmit={onAddPlan}>
-          <input value={content} onChange={(e) => setContent(e.target.value)} />
+          <input
+            placeholder="Add Plan"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
           <button>add</button>
         </form>
       </div>
@@ -91,3 +137,9 @@ const Planner = () => {
 };
 
 export default Planner;
+
+const readPlansFromLocalStorage = () => {
+  console.log("readPlansFromLocalStorage");
+  const planList = localStorage.getItem("planList");
+  return planList ? JSON.parse(planList) : [];
+};

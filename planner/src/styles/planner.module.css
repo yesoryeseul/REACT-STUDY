@@ -4,10 +4,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--color-text);
 }
 
 .container {
-  background-color: #fff;
+  background-color: var(--color-bg);
   width: 400px;
   border-radius: 10px;
   box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.1);
@@ -18,10 +19,20 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background-color: #f4f4f4;
+  background-color: var(--color-bg-dark);
   border-bottom: 1px solid #e1e1e1;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+.mode {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mode > svg {
+  color: var(--color-point);
 }
 
 .filter {
@@ -32,13 +43,13 @@
 .filter li {
   margin-left: 10px;
   cursor: pointer;
-  color: #0c84fe;
+  color: var(--color-point);
   font-weight: 600;
 }
 
 .form {
   padding: 20px 0;
-  background-color: #f1f1f1;
+  background-color: var(--color-bg-dark);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -61,4 +72,8 @@
   height: 36px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
+}
+
+.bb {
+  border-bottom: 2px solid;
 }

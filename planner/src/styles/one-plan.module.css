@@ -7,7 +7,7 @@
   margin: 10px 0;
 
   & svg {
-    color: #0074ea;
+    color: var(--color-trash);
     cursor: pointer;
   }
 }
