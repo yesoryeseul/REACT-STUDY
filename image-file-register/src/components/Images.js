@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import styled from "styled-components";
 
 // image input 로직
 const IamgeRegister = () => {
@@ -28,24 +29,24 @@ const IamgeRegister = () => {
       />
       <div
         style={{
-          display: "grid",
+          display: "flex",
           gap: "15px",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
           maxWidth: "1060px",
           margin: "0 auto",
         }}
       >
         {imageSrcList.map((imageUrl, idx) => (
-          <img
+          <S.ImageBg
             key={idx}
-            src={imageUrl}
-            alt={`uploaded image ${idx}`}
-            style={{
-              width: "200px",
-              height: "200px",
-              border: "1px solid #ddd",
-            }}
-          />
+            imageUrl={imageUrl}
+            // src={imageUrl}
+            // alt={`uploaded image ${idx}`}
+            // style={{
+            //   width: "200px",
+            //   height: "200px",
+            //   border: "1px solid #ddd",
+            // }}
+          ></S.ImageBg>
         ))}
       </div>
     </div>
@@ -53,3 +54,15 @@ const IamgeRegister = () => {
 };
 
 export default IamgeRegister;
+
+const ImageBg = styled.div`
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ddd;
+  background: url(${(props) => props.imageUrl}) no-repeat center center /
+    contain;
+`;
+
+const S = {
+  ImageBg,
+};
