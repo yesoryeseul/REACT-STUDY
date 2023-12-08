@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { TodoData } from "apis/datas/todo.data";
-import { TodoApi } from "apis/todo.api";
 import { QUERYKEYS } from "consts/keys";
+import { TodoApis } from "apis/api";
+import { TodoData } from "__mock__/datas/todo.data";
 
 const useGetTodo = () => {
-  useQuery([QUERYKEYS.GET_TODO], () => TodoApi.getTodo());
+  // useQuery([QUERYKEYS.GET_TODO], () => TodoApis.getTodo());
   return { data: TodoData };
 };
 

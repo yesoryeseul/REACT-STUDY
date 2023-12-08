@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TodoApi } from "apis/todo.api";
+import { TodoApis } from "apis/api";
+
 import { QUERYKEYS } from "consts/keys";
 
 // const useCreateTodo = () => {
@@ -15,9 +16,7 @@ import { QUERYKEYS } from "consts/keys";
 //   });
 // };
 const useCreateTodo = () => {
-  const createTodoMutation = useMutation((todoData) =>
-    TodoApi.createTodo(todoData)
-  );
+  const createTodoMutation = useMutation(() => TodoApis.createTodo());
 
   return createTodoMutation;
 };

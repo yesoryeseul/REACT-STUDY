@@ -1,6 +1,10 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { TodoData } from "__mock__/datas/todo.data";
+import { TodoApis } from "apis/api";
+import { QUERYKEYS } from "consts/keys";
 import useCreateTodo from "hooks/queries/useCreateTodo";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TodoCreate = () => {
   const [inputValues, setInputValues] = useState({
@@ -11,18 +15,30 @@ const TodoCreate = () => {
   const handleChangeValues = (e) => {
     const { name, value } = e.target;
     setInputValues((prev) => ({ ...prev, [name]: value }));
-    console.log({ [name]: value });
+    // console.log({ [name]: value });
+    console.log(inputValues);
   };
 
-  const createTodoMutation = useCreateTodo();
+  const queryClient = useQueryClient();
+
+  const { mutate: addTodoMutation } = useMutation(
+    (newTodo) => TodoApis.createTodo(newTodo),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([QUERYKEYS.GET_TODO]);
+      },
+    }
+  );
 
   const addTodo = () => {
-    createTodoMutation.mutate({
+    addTodoMutation({
       title: inputValues.title,
       content: inputValues.content,
     });
+    TodoData.push(inputValues);
     setInputValues({ title: "", content: "" });
   };
+
   return (
     <>
       <input
@@ -38,6 +54,12 @@ const TodoCreate = () => {
         onChange={handleChangeValues}
       />{" "}
       <button onClick={addTodo}>Add</button>
+      {/* {isSuccess && (
+      <div>
+        <h3>{inputValues.title}</h3>
+        <p>{inputValues.content}</p>
+      </div>
+      )}  */}
     </>
   );
 };

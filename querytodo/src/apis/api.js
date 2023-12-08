@@ -1,6 +1,7 @@
 import axios from "axios";
+// import { axiosInstance } from "./@core";
 
-export const TodoApi = {
+export const TodoApis = {
   getTodo() {
     return axios.get("/api/todo");
   },
